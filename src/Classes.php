@@ -9,36 +9,47 @@ use phpDocumentor\Reflection\Types\Integer;
 use Deliverea\CoffeeMachine\CustomExceptions;
 
 
-class Drink {
-    const TYPE_TEA          = 0;
-    const TYPE_COFFEE       = 1;
-    const TYPE_CHOCOLATE    = 2;
+class Drink
+{
+    const TYPE_TEA = 0;
+    const TYPE_COFFEE = 1;
+    const TYPE_CHOCOLATE = 2;
     private $types = [self::TYPE_TEA, self::TYPE_COFFEE, self::TYPE_CHOCOLATE];
 
-    public function __construct($type) {
+    public function __construct($type)
+    {
         if (!in_array($type, $this->types)) {
             throw new \Exception(CustomExceptions::DRINK_TYPE);
         }
         $this->type = $type;
     }
+
 }
 
-trait GetPrice {
-    public function getPrice() {
+trait GetPrice
+{
+    public function getPrice()
+    {
         return $this->price / 100;
     }
 }
 
-trait GetType {
+trait GetType
+{
     public function getType()
     {
         return $this->type;
     }
 }
 
-class Tea extends Drink {
-    use GetPrice;       // Use a trait to share getPrice method
+class Tea extends Drink
+{
+    use GetPrice;
+
+    // Use a trait to share getPrice method
+
     use GetType;
+
     private $price; // Divide by 100 to get price with decimals (for avoiding division/convertion errors)
 
     public function __construct()
@@ -49,9 +60,14 @@ class Tea extends Drink {
 
 }
 
-class Coffee extends Drink {
-    use GetPrice;       // Use a trait to share getPrice method
+class Coffee extends Drink
+{
+    use GetPrice;
+
+    // Use a trait to share getPrice method
+
     use GetType;
+
     private $price; // Divide by 100 to get price with decimals (for avoiding division/convertion errors)
 
     public function __construct()
@@ -62,9 +78,14 @@ class Coffee extends Drink {
 
 }
 
-class Chocolate extends Drink {
-    use GetPrice;       // Use a trait to share getPrice method
+class Chocolate extends Drink
+{
+    use GetPrice;
+
+    // Use a trait to share getPrice method
+
     use GetType;
+
     private $price; // Divide by 100 to get price with decimals (for avoiding division/convertion errors)
 
     public function __construct()
@@ -75,20 +96,23 @@ class Chocolate extends Drink {
 
 }
 
-class Machine {
+class Machine
+{
     private $money;
     private $change = 0;
     private $sugar;
     private $extraHot;
     private $stick = false;
 
-    function __construct($money, $sugar = 0, $extraHot = false) {
+    function __construct($money, $sugar = 0, $extraHot = false)
+    {
         $this->money = $money;
         $this->sugar = $sugar;
         $this->extraHot = $extraHot;
     }
 
-    function makeDrink(Drink $drink) {
+    function makeDrink(Drink $drink)
+    {
         $this->addSugar();
         if ($this->money < $drink->getPrice()) {
             throw new \Exception(CustomExceptions::MONEY);
@@ -98,7 +122,8 @@ class Machine {
         return $drink;
     }
 
-    private function addSugar() {
+    private function addSugar()
+    {
         if ($this->sugar < 0 || $this->sugar > 10) { // Let's assume a maximun of 10 sugar for drink
             throw new \Exception(CustomExceptions::SUGAR_AMOUNT);
         } elseif ($this->sugar > 0) {
@@ -106,15 +131,18 @@ class Machine {
         }
     }
 
-    public function isExtraHot() {
+    public function isExtraHot()
+    {
         return $this->extraHot;
     }
 
-    public function hastStick() {
+    public function hastStick()
+    {
         return $this->stick;
     }
 
-    public function getSugars() {
+    public function getSugars()
+    {
         return $this->sugar;
     }
 }

@@ -1,7 +1,12 @@
 <?php
 
 namespace Deliverea\CoffeeMachine\Console;
+include_once './src/Classes.php';
 
+use Deliverea\CoffeeMachine\Chocolate;
+use Deliverea\CoffeeMachine\Tea;
+use Deliverea\CoffeeMachine\Coffee;
+use Deliverea\CoffeeMachine\Machine;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -44,55 +49,39 @@ class MakeDrinkCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $drinkType = strtolower($input->getArgument('drink-type'));
-        if (!in_array($drinkType, ['tea', 'coffee', 'chocolate'])) {
+        $money = $input->getArgument('money');
+        $sugars = $input->getArgument('sugars');
+        $extraHot = $input->getOption('extra-hot');
+
+        // TODO: USE A FACTORY FOR THE DRINK TYPE
+        switch ($drinkType) {
+            case 'tea':
+                $theDrink = new Tea();
+                break;
+            case 'coffee':
+                $theDrink = new Coffee();
+                break;
+            case 'chocolate':
+                $theDrink = new Chocolate();
+                break;
+            default:
+                $theDrink = false;
+        }
+        if (!$theDrink) {
             $output->writeln('The drink type should be tea, coffee or chocolate.');
         } else {
-            /**
-             * Tea       --> 0.4
-             * Coffee    --> 0.5
-             * Chocolate --> 0.6
-             */
-            $money = $input->getArgument('money');
-            switch ($drinkType) {
-                case 'tea':
-                    if ($money < 0.4) {
-                        $output->writeln('The tea costs 0.4.');
-                        return;
-                    }
-                    break;
-                case 'coffee':
-                    if ($money < 0.5) {
-                        $output->writeln('The coffee costs 0.5.');
-                        return;
-                    }
-                    break;
-                case 'chocolate':
-                    if ($money < 0.6) {
-                        $output->writeln('The chocolate costs 0.6.');
-                        return;
-                    }
-                    break;
+            $machine = new Machine($money, $sugars, $extraHot);
+            $userOutput  = "You have ordered a $drinkType ";
+            try {
+                $drink = $machine->makeDrink($theDrink);
+            } catch (\Exception $error) {
+                die($error->getMessage());
             }
-
-            $sugars = $input->getArgument('sugars');
-            $stick = false;
-            $extraHot = $input->getOption('extra-hot');
-            if ($sugars >= 0 && $sugars <= 2) {
-                $output->write('You have ordered a ' . $drinkType);
-                if ($extraHot) {
-                    $output->write(' extra hot');
-                }
-
-                if ($sugars > 0) {
-                    $stick = true;
-                    if($stick) {
-                        $output->write(' with ' . $sugars . ' sugars (stick included)');
-                    }
-                }
-                $output->writeln('');
-            } else {
-                $output->writeln('The number of sugars should be between 0 and 2.');
-            }
+            $userOutput .= ($machine->isExtraHot() ? ' extra hot ' : ' ');
+            $userOutput .= ('with ' . $machine->getSugars() . ' sugars ');
+            $userOutput .= (' ' . $machine->hastStick() ? '(stick included)' : '');
+            $output->write($userOutput);
         }
+
     }
 }

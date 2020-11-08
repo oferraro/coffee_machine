@@ -25,7 +25,8 @@ class MakeDrinkCommandTest extends TestCase
     }
 
     /* Makes a Chocolate with 2 sugars, with stick and extra hot */
-    public function testGetChocolateExtraHot2Sugar() {
+    public function testGetChocolateExtraHot2Sugar()
+    {
         $sugars = 2;
         $chocolate = new Chocolate();
         $machine = new Machine(2.3, $sugars, true);
@@ -37,7 +38,8 @@ class MakeDrinkCommandTest extends TestCase
     }
 
     /* Makes a Teat with no sugar and no stick */
-    public function testGetTeaNoSugar() {
+    public function testGetTeaNoSugar()
+    {
         $tea = new Tea();
         $machine = new Machine(1.3, 0);
         $drink = $machine->makeDrink($tea);
@@ -47,7 +49,8 @@ class MakeDrinkCommandTest extends TestCase
     }
 
     /* Makes a coffee with 6 sugars, stick and not extra hot */
-    public function testGetCoffee() {
+    public function testGetCoffee()
+    {
         $sugars = 6;
         $coffee = new Coffee();
         $machine = new Machine(2.3, $sugars, false);
@@ -59,7 +62,8 @@ class MakeDrinkCommandTest extends TestCase
     }
 
     /* Make drink fails because of to many sugars */
-    public function testGetCoffeeSugarException() {
+    public function testGetCoffeeSugarException()
+    {
         $coffee = new Coffee();
         $machine = new Machine(2.3, 22);
         $this->expectException(\Exception::class);
@@ -68,7 +72,8 @@ class MakeDrinkCommandTest extends TestCase
     }
 
     /* Make drink fails because of not enough money */
-    public function testMoneyException() {
+    public function testMoneyException()
+    {
         $coffee = new Coffee();
         $machine = new Machine(0.1, 2);
         $this->expectException(\Exception::class);

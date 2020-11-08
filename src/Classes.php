@@ -1,12 +1,13 @@
 <?php
 // TODO: move, reorganize folders, files and namespaces
 
-namespace Deliverea\Util;
+namespace Deliverea\CoffeeMachine;
 
 use http\Cookie;
 use phpDocumentor\Reflection\Types\Boolean;
 use phpDocumentor\Reflection\Types\Integer;
-use Deliverea\CustomExceptions\CustomExceptions;
+use Deliverea\CoffeeMachine\CustomExceptions;
+
 
 class Drink {
     const TYPE_TEA          = 0;

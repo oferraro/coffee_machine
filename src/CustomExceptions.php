@@ -1,6 +1,6 @@
 <?php
 
-namespace Deliverea\CustomExceptions;
+namespace Deliverea\CoffeeMachine;
 
 class CustomExceptions {
     const SUGAR_AMOUNT = 'invalid sugar amount';

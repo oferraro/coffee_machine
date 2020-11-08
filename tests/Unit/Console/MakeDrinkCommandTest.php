@@ -2,7 +2,7 @@
 
 namespace Deliverea\CoffeeMachine\Tests\Unit\Console;
 include_once './src/Util/Classes.php';
-// include_once './src/CustomExceptions.php';
+include_once './src/CustomExceptions.php';
 
 use Deliverea\CustomExceptions\CustomExceptions;
 use Deliverea\Util\Drink;
